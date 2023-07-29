@@ -6,8 +6,8 @@ const success = chalk.bold.bgGreen;
 const info = chalk.bold.bgCyan;
 const warning = chalk.hex('#FFA500'); 
 
-const printError = (error) => {
-  console.log(error(' ERROR ') + ' ' + error);
+const printError = (err) => {
+  console.log(error(' ERROR ') + ' ' + err);
 };
 
 const printSuccess = (message) => {
