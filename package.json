@@ -1,0 +1,20 @@
+{
+  "name": "weather-cli",
+  "version": "1.0.0",
+  "private": false,
+  "description": "CLI for getting weather",
+  "main": "app.js",
+  "bin":"./app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "cli",
+    "weather"
+  ],
+  "author": "Aleksandr Babayan",
+  "license": "ISC",
+  "homepage": "",
+  "repository": {"type": "git","url":""},
+  "bugs": {"url":"","email": "babayanaleksandr80@gmail.com"}
+}
