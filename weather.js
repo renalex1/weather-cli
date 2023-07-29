@@ -16,7 +16,19 @@ const saveToken = async (token) => {
   }
 };
 
-const initCLI = () => {
+const saveCity = async (city) => {
+  if (!city.length) {
+    return printError('City not transferred!');
+  }
+  try {
+    await saveKeyValue(API_DICTIONARY.city, city);
+    printSuccess('City saved!');
+  } catch (err) {
+    printError(err.message);
+  }
+};
+
+const initCLI = async () => {
   const args = getArgs(process.argv);
   // console.log(args);
   if (args.h) {
@@ -24,15 +36,15 @@ const initCLI = () => {
     printHelp();
   }
   if (args.s) {
-    // Save citys
-    console.log(args.s);
+    // Save city
+    saveCity(args.s);
   }
   if (args.t) {
     // Save token
     return saveToken(args.t);
   }
   // Show weather
-	getWeather('yerevan')
+   console.log(await getWeather('yerevan'));
 };
 
 initCLI();
