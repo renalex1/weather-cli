@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 import { getArgs } from './helpers/args.js';
-import { printHelp, printError, printSuccess } from './services/log.service.js';
-import { saveKeyValue, API_DICTIONARY } from './services/storage.service.js';
-import { getWeather } from './services/api.service.js';
+import {
+  printHelp,
+  printError,
+  printSuccess,
+  printWeather,
+} from './services/log.service.js';
+import { saveKeyValue, API_DICTIONARY, getKeyValue } from './services/storage.service.js';
+import { getWeather, getIcon } from './services/api.service.js';
 
 const saveToken = async (token) => {
   if (!token.length) {
@@ -28,9 +33,27 @@ const saveCity = async (city) => {
   }
 };
 
+const getForecast = async () => {
+  try {
+		const city = process.env.CITY ?? (await getKeyValue(API_DICTIONARY.city));
+    const weather = await getWeather(city);
+		printWeather(weather, getIcon(weather.weather[0].icon));
+  } catch (err) {
+    if (err?.response?.status == 400) {
+      printError('City not transferred!');
+    } else if (err?.response?.status == 401) {
+      printError('Invalid token!');
+    } else if (err?.response?.status == 404) {
+      printError('Invalid city!');
+    } else {
+      printError(err.message);
+    }
+  }
+};
+
 const initCLI = async () => {
   const args = getArgs(process.argv);
-  // console.log(args);
+	
   if (args.h) {
     // Show help
     printHelp();
@@ -44,7 +67,9 @@ const initCLI = async () => {
     return saveToken(args.t);
   }
   // Show weather
-   console.log(await getWeather('yerevan'));
+  await getForecast();
 };
 
 initCLI();
+
+
